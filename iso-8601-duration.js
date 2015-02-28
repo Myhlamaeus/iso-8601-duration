@@ -60,6 +60,30 @@ class Iso8601Duration {
         return new this.constructor(this);
     }
 
+    add(b) {
+        if(typeof(b) !== "object") {
+            throw new TypeError("Iso8601Duration.prototype.add: expects object");
+        }
+        let clone = this.clone();
+        if("weeks" in clone) {
+            if("weeks" in b) {
+                clone.weeks += b.weeks;
+                return clone;
+            }
+            if(names.some((name) => name in clone)) {
+                throw new Error("Iso8601Duration.prototype.add: incompatible objects");
+            }
+            return clone;
+        }
+
+        for(let name of names) {
+            if(name in b) {
+                clone[name] += b[name];
+            }
+        }
+        return clone;
+    }
+
     reducePrecision(to) {
         if(names.indexOf(to) === -1) {
             throw new Error(`Unknown component: ${to}`);
