@@ -94,7 +94,7 @@ class Iso8601Duration {
     }
 
     clone() {
-        return new this.constructor(this);
+        return new Iso8601Duration(this);
     }
 
     normalize() {
