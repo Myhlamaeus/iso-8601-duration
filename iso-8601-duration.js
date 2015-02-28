@@ -1,8 +1,8 @@
-let names = ["years", "months", "days", "hours", "minutes", "seconds"],
-    thresholds = [false, 12, false, 24, 60, 60];
+const names = Object.freeze(["years", "months", "days", "hours", "minutes", "seconds"]),
+    thresholds = Object.freeze([false, 12, false, 24, 60, 60]);
 
 function invert(duration) {
-    let obj = {};
+    const obj = {};
     if("weeks" in duration) {
         obj.weeks = -duration.weeks;
     } else {
@@ -40,7 +40,7 @@ function normalizeValue(obj, i) {
 
 class Iso8601Duration {
     constructor(init) {
-        let weeks = "weeks" in init;
+        const weeks = "weeks" in init;
 
         for(let name of names) {
             if(name in init) {
@@ -66,6 +66,7 @@ class Iso8601Duration {
         if("weeks" in this) {
             return `P${this.weeks}W`;
         }
+
         let ret = "P";
         for(let name of names) {
             if(name === "hours") {
@@ -119,7 +120,8 @@ class Iso8601Duration {
         if(typeof(b) !== "object") {
             throw new TypeError("Iso8601Duration.prototype.add: expects object");
         }
-        let clone = this.clone();
+
+        const clone = this.clone();
         if("weeks" in clone) {
             if("weeks" in b) {
                 clone.weeks += b.weeks;
@@ -136,6 +138,7 @@ class Iso8601Duration {
                 clone[name] += b[name];
             }
         }
+
         return clone;
     }
 
@@ -151,11 +154,13 @@ class Iso8601Duration {
             if(to === "year" || to === "month") {
                 return new this.constructor({});
             }
+
             return new this.constructor({
                 "weeks": this.weeks
             });
         }
-        let init = {};
+
+        const init = {};
         for(let name of names) {
             init[name] = this[name];
             if(name === to) {
@@ -166,14 +171,17 @@ class Iso8601Duration {
     }
 
     addToDate(date) {
-        date = new Date(date);
         if("weeks" in this) {
             throw new Error("Not implemented");
         }
+        date = new Date(date);
+
         for(let name of names) {
             let val = this[name];
+
             if(val) {
                 let methodName;
+
                 switch(name) {
                     case "days":
                         methodName = "Date";
@@ -192,6 +200,7 @@ class Iso8601Duration {
                 date["setUTC" + methodName](date["getUTC" + methodName]() + val);
             }
         }
+
         return date;
     }
 
@@ -207,21 +216,26 @@ class Iso8601Duration {
 Iso8601Duration.parse = function(str) {
     str = String(str).replace(/,/g, ".");
 
-    let matches = str.match(/^P(\d+(?:\.\d+)?)W$/);
-    if(matches) {
+    const weekMatches = str.match(/^P(\d+(?:\.\d+)?)W$/);
+    if(weekMatches) {
         return new this({
-            "weeks": Number(matches[1])
+            "weeks": Number(weekMatches[1])
         });
     }
-    let parts = names.map((name) => `(?:(\\d+(?:\\.\\d+)?)${name.charAt(0).toUpperCase()})?`);
-    matches = str.match(new RegExp(`^P${parts.slice(0, 3).join("")}(?:T${parts.slice(3).join("")})?\$`));
+
+    const parts = names.map((name) => `(?:(\\d+(?:\\.\\d+)?)${name.charAt(0).toUpperCase()})?`);
+
+    let matches = str.match(new RegExp(`^P${parts.slice(0, 3).join("")}(?:T${parts.slice(3).join("")})?\$`));
+
     if(!matches) {
         throw new Error(`Iso8601Duration.parse: '${str}' is not a valid ISO 8601 duration`);
     }
+
     matches = matches.slice(1).map(Number);
-    let init = {};
+
+    const init = {};
     for(let [i, name] of names.entries()) {
-        let match = matches[i];
+        const match = matches[i];
 
         if(!Number.isNaN(match)) {
             init[name] = match;
@@ -238,6 +252,7 @@ Iso8601Duration.fromNumber = function(number, unit = "seconds") {
     if(names.indexOf(unit) === -1 && unit !== "weeks") {
         throw new Error(`Iso8601Duration.fromNumber: unknown unit: ${unit}`);
     }
+
     const init = {};
     init[unit] = number;
     return new Iso8601Duration(init);
