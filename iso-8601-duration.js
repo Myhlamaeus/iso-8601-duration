@@ -56,6 +56,16 @@ class Iso8601Duration {
         return ret;
     }
 
+    valueOf() {
+        if("weeks" in this) {
+            return this.weeks * 7 * 24 * 60 * 60;
+        }
+        if(this.years || this.months) {
+            throw new Error("Iso8601Duration: can only cast durations of less than P1M to number");
+        }
+        return ((this.days * 24 + this.hours) * 60 + this.minutes) * 60 + this.seconds;
+    }
+
     clone() {
         return new this.constructor(this);
     }
