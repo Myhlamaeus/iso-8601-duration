@@ -185,4 +185,17 @@ Iso8601Duration.parse = function(str) {
     return new this(init);
 };
 
+Iso8601Duration.fromNumber = function(number, unit = "seconds") {
+    number = Number(number);
+    if(Number.isNaN(number)) {
+        throw new TypeError("Iso8601Duration.fromNumber: not a number");
+    }
+    if(names.indexOf(unit) === -1 && unit !== "weeks") {
+        throw new Error(`Iso8601Duration.fromNumber: unknown unit: ${unit}`);
+    }
+    const init = {};
+    init[unit] = number;
+    return new Iso8601Duration(init);
+};
+
 export default Iso8601Duration;
