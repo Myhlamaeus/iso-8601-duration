@@ -1,4 +1,5 @@
-let names = ["years", "months", "days", "hours", "minutes", "seconds"];
+let names = ["years", "months", "days", "hours", "minutes", "seconds"],
+    thresholds = [false, 12, false, 24, 60, 60];
 
 function invert(duration) {
     let obj = {};
@@ -10,6 +11,31 @@ function invert(duration) {
         }
     }
     return obj;
+}
+
+function normalizeValue(obj, i) {
+    const name = names[i],
+        threshold = thresholds[i],
+        thresholdNext = thresholds[i + 1];
+
+    let val = obj[name];
+
+    if(thresholdNext) {
+        const valInt = parseInt(val, 10);
+
+        if(valInt !== val) {
+            obj[names[i + 1]] += (val - valInt) * thresholdNext;
+            val = valInt;
+        }
+    }
+    if(threshold) {
+        if(val >= threshold) {
+            obj[names[i - 1]] += Math.floor(val / threshold);
+            val %= threshold;
+        }
+    }
+
+    return val;
 }
 
 class Iso8601Duration {
@@ -68,6 +94,25 @@ class Iso8601Duration {
 
     clone() {
         return new this.constructor(this);
+    }
+
+    normalize() {
+        if("weeks" in this) {
+            return;
+        }
+        let changed = false;
+        for(let [i, name] of names.entries()) {
+            const val = normalizeValue(this, i);
+
+            if(val !== this[name]) {
+                changed = true;
+                this[name] = val;
+            }
+        }
+
+        if(changed) {
+            this.normalize();
+        }
     }
 
     add(b) {
