@@ -84,6 +84,10 @@ class Iso8601Duration {
         return clone;
     }
 
+    sub() {
+        return this.add.apply(invert(this), arguments);
+    }
+
     reducePrecision(to) {
         if(names.indexOf(to) === -1) {
             throw new Error(`Unknown component: ${to}`);
