@@ -1,5 +1,17 @@
 let names = ["years", "months", "days", "hours", "minutes", "seconds"];
 
+function invert(duration) {
+    let obj = {};
+    if("weeks" in duration) {
+        obj.weeks = -duration.weeks;
+    } else {
+        for(let name of names) {
+            obj[name] = -duration[name];
+        }
+    }
+    return obj;
+}
+
 class Iso8601Duration {
     constructor(init) {
         let weeks = "weeks" in init;
@@ -97,15 +109,7 @@ class Iso8601Duration {
     }
 
     subFromDate() {
-        let init = {};
-        if("weeks" in this) {
-            init.weeks = -this.weeks;
-        } else {
-            for(let name of names) {
-                init[name] = -this[name];
-            }
-        }
-        return this.addToDate.apply(init, arguments);
+        this.addToDate.apply(invert(this));
     }
 
     [Symbol.toStringTag]() {
