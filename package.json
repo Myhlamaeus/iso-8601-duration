@@ -21,7 +21,7 @@
     "iso-8601-duration",
     "color"
   ],
-  "license": "GPL-3.0",
+  "license": "MIT",
   "main": "dist/iso-8601-duration.js",
   "repository": {
     "type": "git",
