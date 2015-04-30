@@ -1,7 +1,7 @@
 {
   "name": "iso-8601-duration",
   "main": "iso-8601-duration.js",
-  "version": "0.0.0",
+  "version": "0.2.0",
   "homepage": "https://github.com/ileri/iso-8601-duration",
   "authors": [
     "Malte-Maurice Dreyer <dreyer.maltem+dev@gmail.com>"
