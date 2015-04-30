@@ -7,7 +7,7 @@
     "url": "https://github.com/ileri/iso-8601-duration/issues"
   },
   "dependencies": {
-    "array-like-object-wrapper": "^0.1.0"
+    "array-like-object-wrapper": "^0.2.1"
   },
   "devDependencies": {
     "babel": "^5.1.13",
