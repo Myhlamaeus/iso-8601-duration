@@ -10,17 +10,11 @@
     "array-like-object-wrapper": "^0.1.0"
   },
   "devDependencies": {
-    "babel": "^4.4.6",
-    "grunt": "^0.4.5",
-    "grunt-babel": "^4.0.0",
-    "grunt-browserify": "^3.4.0",
-    "grunt-contrib-jshint": "^0.10.0",
-    "grunt-contrib-uglify": "^0.8.0",
-    "grunt-mocha-test": "^0.12.4",
-    "jshint-stylish": "^1.0.0",
-    "load-grunt-tasks": "^1.0.0",
-    "mocha": "^2.1.0",
-    "time-grunt": "^1.0.0"
+    "babel": "^5.1.13",
+    "gulp": "^3.8.11",
+    "gulp-babel": "^5.1.0",
+    "gulp-mocha": "^2.0.1",
+    "gulp-sourcemaps": "^1.5.2"
   },
   "homepage": "https://github.com/ileri/iso-8601-duration",
   "keywords": [
@@ -28,13 +22,13 @@
     "color"
   ],
   "license": "GPL-3.0",
-  "main": "dist/cjs.js",
+  "main": "dist/iso-8601-duration.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/ileri/iso-8601-duration.git"
   },
   "scripts": {
-    "prepublish": "grunt build:cjs",
-    "test": "standard {test/,lib/,./}*.js && grunt test"
+    "prepublish": "gulp build",
+    "test": "standard {test/,lib/,./}*.js && gulp test"
   }
 }
