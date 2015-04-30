@@ -35,6 +35,6 @@
   },
   "scripts": {
     "prepublish": "grunt build:cjs",
-    "test": "grunt test"
+    "test": "standard {test/,lib/,./}*.js && grunt test"
   }
 }
