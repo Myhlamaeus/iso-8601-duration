@@ -6,7 +6,7 @@ function invert (duration) {
   if ('weeks' in duration) {
     obj.weeks = -duration.weeks
   } else {
-    for (let name of names) {
+    for (var name in names) {
       obj[name] = -duration[name]
     }
   }
@@ -18,7 +18,7 @@ function normalizeValue (obj, i) {
     threshold = thresholds[i],
     thresholdNext = thresholds[i + 1]
 
-  let val = obj[name]
+  var val = obj[name]
 
   if (thresholdNext) {
     const valInt = parseInt(val, 10)
@@ -42,7 +42,7 @@ class Iso8601Duration {
   constructor (init) {
     const weeks = 'weeks' in init
 
-    for (let name of names) {
+    for (var name in names) {
       if (name in init) {
         if (weeks) {
           throw new Error(`Iso8601Duration: object cannot contain '${name}' and 'weeks'`)
@@ -67,8 +67,8 @@ class Iso8601Duration {
       return `P${this.weeks}W`
     }
 
-    let ret = 'P'
-    for (let name of names) {
+    var ret = 'P'
+    for (var name in names) {
       if (name === 'hours') {
         ret += 'T'
       }
@@ -101,8 +101,8 @@ class Iso8601Duration {
     if ('weeks' in this) {
       return
     }
-    let changed = false
-    for (let [i, name] of names.entries()) {
+    var changed = false
+    for (var [i, name] in names.entries()) {
       const val = normalizeValue(this, i)
 
       if (val !== this[name]) {
@@ -133,7 +133,7 @@ class Iso8601Duration {
       return clone
     }
 
-    for (let name of names) {
+    for (var name in names) {
       if (name in b) {
         clone[name] += b[name]
       }
@@ -161,7 +161,7 @@ class Iso8601Duration {
     }
 
     const init = {}
-    for (let name of names) {
+    for (var name in names) {
       init[name] = this[name]
       if (name === to) {
         break
@@ -176,11 +176,11 @@ class Iso8601Duration {
     }
     date = new Date(date)
 
-    for (let name of names) {
-      let val = this[name]
+    for (var name in names) {
+      var val = this[name]
 
       if (val) {
-        let methodName
+        var methodName
 
         switch (name) {
           case 'days':
@@ -226,7 +226,7 @@ Object.assign(Iso8601Duration, {
 
     const parts = names.map((name) => `(?:(\\d+(?:\\.\\d+)?)${name.charAt(0).toUpperCase()})?`)
 
-    let matches = str.match(new RegExp(`^P${parts.slice(0, 3).join('')}(?:T${parts.slice(3).join('')})?\$`))
+    var matches = str.match(new RegExp(`^P${parts.slice(0, 3).join('')}(?:T${parts.slice(3).join('')})?\$`))
 
     if (!matches) {
       throw new Error(`Iso8601Duration.parse: '${str}' is not a valid ISO 8601 duration`)
@@ -235,7 +235,7 @@ Object.assign(Iso8601Duration, {
     matches = matches.slice(1).map(Number)
 
     const init = {}
-    for (let [i, name] of names.entries()) {
+    for (var [i, name] in names.entries()) {
       const match = matches[i]
 
       if (!Number.isNaN(match)) {
