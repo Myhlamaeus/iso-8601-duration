@@ -6,7 +6,7 @@ function invert (duration) {
   if ('weeks' in duration) {
     obj.weeks = -duration.weeks
   } else {
-    for (let name of names) {
+    for (let name in names) {
       obj[name] = -duration[name]
     }
   }
@@ -42,7 +42,7 @@ class Iso8601Duration {
   constructor (init) {
     const weeks = 'weeks' in init
 
-    for (let name of names) {
+    for (let name in names) {
       if (name in init) {
         if (weeks) {
           throw new Error(`Iso8601Duration: object cannot contain '${name}' and 'weeks'`)
@@ -68,7 +68,7 @@ class Iso8601Duration {
     }
 
     let ret = 'P'
-    for (let name of names) {
+    for (let name in names) {
       if (name === 'hours') {
         ret += 'T'
       }
@@ -102,7 +102,7 @@ class Iso8601Duration {
       return
     }
     let changed = false
-    for (let [i, name] of names.entries()) {
+    for (let [i, name] in names.entries()) {
       const val = normalizeValue(this, i)
 
       if (val !== this[name]) {
@@ -133,7 +133,7 @@ class Iso8601Duration {
       return clone
     }
 
-    for (let name of names) {
+    for (let name in names) {
       if (name in b) {
         clone[name] += b[name]
       }
@@ -161,7 +161,7 @@ class Iso8601Duration {
     }
 
     const init = {}
-    for (let name of names) {
+    for (let name in names) {
       init[name] = this[name]
       if (name === to) {
         break
@@ -176,7 +176,7 @@ class Iso8601Duration {
     }
     date = new Date(date)
 
-    for (let name of names) {
+    for (let name in names) {
       let val = this[name]
 
       if (val) {
@@ -235,7 +235,7 @@ Object.assign(Iso8601Duration, {
     matches = matches.slice(1).map(Number)
 
     const init = {}
-    for (let [i, name] of names.entries()) {
+    for (let [i, name] in names.entries()) {
       const match = matches[i]
 
       if (!Number.isNaN(match)) {
